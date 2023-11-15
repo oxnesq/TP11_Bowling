@@ -13,6 +13,18 @@ public class Tour {
 		this.lesLances = new ArrayList<Lance>();
 	}
 	
+	public Boolean estUnSpare(){
+		if (scoreTour()==10 && lesLances.size()==2)
+			return true;
+		return false;
+	}
+
+	public Boolean estUnStrike(){
+		if (scoreTour()==10 && lesLances.size()==1)
+			return true;
+		return false;
+	}
+	
 	/*public boolean estEnCours(){
 		Boolean bo=false;
 		if (lesLances.size()==0 ||lesLances.size()==1 )
@@ -31,9 +43,6 @@ public class Tour {
 		return score;
 	}
 	
-	public int nbLance(){
-		return lesLances.size();
-	}
 	
 	public void addLance(Lance l){
 		lesLances.add(l);

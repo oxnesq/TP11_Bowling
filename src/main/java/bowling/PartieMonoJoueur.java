@@ -28,17 +28,20 @@ public class PartieMonoJoueur {
 		if (this.estTerminee())
 			throw new IllegalStateException();
 			
+		Boolean bo = null;
+		
 		Lance lance=new Lance(nombreDeQuillesAbattues);
 		if (lesTours.get(numeroTourCourant()).nbLance()==2){ // changer pour strike
 			Tour tour = new Tour();
 			lesTours.add(tour);
 			tour.addLance(lance);
+			bo= true;
 		} else {
 			lesTours.get(numeroTourCourant()).addLance(lance);
+			//on aura jamais le cas ou tour cree mais vide
+			bo = false;
 		}
 		
-		
-		Boolean bo = false;
 		return bo;
 		
 	}
@@ -52,17 +55,16 @@ public class PartieMonoJoueur {
 	
 	public int score() {
 		int scoreTot=0;
-		/*for (int i=0; i<=lesTours.size();i++){
-			if (lesTours.get(i).scoreTour()==10){
-				if (lesTours.get(i).nbLance()==1)
-					;
-				if (lesTours.get(i).nbLance()==2)
-					;
-			} else {
+		
+		for (Tour tour : lesTours){
+			if (tour.estUnSpare())
 				
+			if (tour.estUnStrike()){
+				
+			}else {
+				scoreTot+=tour.scoreTour();
 			}
-				
-		}*/
+		}
 		return scoreTot;
 	}
 
