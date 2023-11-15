@@ -13,9 +13,10 @@ public class PartieMonoJoueur {
 
 	public PartieMonoJoueur() {
 		this.lesTours= new ArrayList<Tour>();
+		Tour tour1 = new Tour();
+		lesTours.add(tour1);
 		this.scorePartie=0;
 	}
-	
 	
 	/**
 	 * Cette méthode doit être appelée à chaque lancer de boule
@@ -31,15 +32,15 @@ public class PartieMonoJoueur {
 		Boolean bo = null;
 		
 		Lance lance=new Lance(nombreDeQuillesAbattues);
-		if (lesTours.get(numeroTourCourant()).nbLance()==2){ // changer pour strike
+		
+		if (numeroProchainLancer()==1) {
 			Tour tour = new Tour();
 			lesTours.add(tour);
-			tour.addLance(lance);
-			bo= true;
+			tourCourant().addLance(lance);
+			bo=true;
 		} else {
-			lesTours.get(numeroTourCourant()).addLance(lance);
-			//on aura jamais le cas ou tour cree mais vide
-			bo = false;
+			tourCourant().addLance(lance);
+			bo=false;
 		}
 		
 		return bo;
@@ -73,7 +74,7 @@ public class PartieMonoJoueur {
 	 */
 	public boolean estTerminee() {
 		Boolean bo = false;
-		if (lesTours.size()==10)
+		if (numeroProchainLancer()==0)
 			bo=true;
 		return bo;
     }
@@ -85,13 +86,34 @@ public class PartieMonoJoueur {
 	public int numeroTourCourant() {
 		return lesTours.size();
 	}
+	public Tour tourCourant(){
+		return lesTours.get(numeroTourCourant()-1);
+	}
 
 	/**
 	 * @return Le numéro du prochain lancer pour tour courant [1..3], ou 0 si le jeu
 	 *         est fini
 	 */
 	public int numeroProchainLancer() {
-		throw new UnsupportedOperationException("Pas encore implémenté");
+		int nb=-1;
+		if (tourCourant().nbLance()==0){
+			nb=1;
+		} else if (tourCourant().nbLance()==1) {
+			if (numeroTourCourant()==10)
+				nb=2;
+			if (tourCourant().estUnStrike())
+				nb=1;
+		} else if (tourCourant().nbLance()==2) {
+			if (numeroTourCourant()!=10){
+				nb=1;
+			} else {
+				if (tourCourant().estUnSpare())
+					nb=3;
+			} 
+		} else if (tourCourant().nbLance()==3)
+			nb=0;
+
+			return nb;
 	}
 
 }

@@ -10,4 +10,6 @@ public class Lance {
 	public int getNombreGuillesAbattues() {
 		return nombreGuillesAbattues;
 	}
+
+
 }

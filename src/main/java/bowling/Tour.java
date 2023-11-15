@@ -14,26 +14,18 @@ public class Tour {
 	}
 	
 	public Boolean estUnSpare(){
+		Boolean bo = false;
 		if (scoreTour()==10 && lesLances.size()==2)
-			return true;
-		return false;
+			bo= true;
+		return bo;
 	}
 
 	public Boolean estUnStrike(){
+		Boolean bo = false;
 		if (scoreTour()==10 && lesLances.size()==1)
-			return true;
-		return false;
-	}
-	
-	/*public boolean estEnCours(){
-		Boolean bo=false;
-		if (lesLances.size()==0 ||lesLances.size()==1 )
-			for (Lance l : lesLances){
-				if (l.getNombreGuillesAbattues()<10)
-					bo=true;
-		}
+			bo= true;
 		return bo;
-	}*/
+	}
 	
 	public int scoreTour (){
 		int score=0;
@@ -46,6 +38,10 @@ public class Tour {
 	
 	public void addLance(Lance l){
 		lesLances.add(l);
+	}
+	
+	public int nbLance(){
+		return lesLances.size();
 	}
 
 }
