@@ -55,7 +55,7 @@ public class PartieMonoJoueur {
 	
 	public int score() {
 		int scoreTot=0;
-		
+		/*
 		for (Tour tour : lesTours){
 			if (tour.estUnSpare())
 				
@@ -64,7 +64,7 @@ public class PartieMonoJoueur {
 			}else {
 				scoreTot+=tour.scoreTour();
 			}
-		}
+		}*/
 		return scoreTot;
 	}
 
