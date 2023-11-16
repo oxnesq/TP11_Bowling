@@ -26,8 +26,9 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		if (this.estTerminee())
+		/*if (this.estTerminee()){
 			throw new IllegalStateException();
+		}*/
 
 		Lance lance = new Lance(nombreDeQuillesAbattues);
 		tourCourant().addLance(lance);
@@ -36,9 +37,10 @@ public class PartieMonoJoueur {
 			Tour tour = new Tour();
 			lesTours.add(tour);
 		}
+
 		Boolean bo = false;
-		if (numeroProchainLancer()==2 ||numeroProchainLancer()==3 )
-			bo=true;
+		if (numeroProchainLancer() == 2 || numeroProchainLancer() == 3)
+			bo = true;
 
 		return bo;
 
@@ -54,25 +56,39 @@ public class PartieMonoJoueur {
 
 	public int score() {
 		int scoreTot = 0;
-		/*
+		/*int lastSpare = 0;
+		int lastStrike = 0;
 		for (Tour tour : lesTours){
-			if (tour.estUnSpare())
-				
-			if (tour.estUnStrike()){
-				
+			if (tour.estUnSpare()){
+				lastSpare += scoreSpareorStrike(tour, lastSpare,lastStrike,0);
+			}else if (tour.estUnStrike()){
+				lastStrike += scoreSpareorStrike(tour, lastSpare,lastStrike,0);
 			}else {
-				scoreTot+=tour.scoreTour();
+				scoreTot+=scoreSpareorStrike(tour, lastSpare,lastStrike,tour.scoreTour());
 			}
 		}*/
 		return scoreTot;
 	}
+	
+	/*public int scoreSpareorStrike(Tour tour,int spare, int strike,int nbQuillesAbbatues){
+		int scoreTot=0;
+		if (spare !=0 ){
+			scoreTot += spare+10; // a changer
+		} else if ( strike!=0) {
+			scoreTot += strike + 1; // a changer
+		} else {
+			scoreTot=tour.scoreTour();
+		}
+		return scoreTot;
+	}*/
 
 	/**
 	 * @return vrai si la partie est terminée pour ce joueur, faux sinon
 	 */
 	public boolean estTerminee() {
 		Boolean bo = false;
-		if (numeroProchainLancer() == 0)
+		//if (numeroProchainLancer()==0)
+		if (lesTours.size() == 10 && (tourCourant().nbLance() == 3 || (!tourCourant().estUnStrike() && !tourCourant().estUnSpare() && tourCourant().nbLance() == 2 )))
 			bo = true;
 		return bo;
 	}
@@ -82,11 +98,14 @@ public class PartieMonoJoueur {
 	 * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
 	 */
 	public int numeroTourCourant() {
-		return lesTours.size();
+		int i = lesTours.size();
+		if (estTerminee())
+			i = 0;
+		return i;
 	}
 
 	public Tour tourCourant() {
-		return lesTours.get(numeroTourCourant()-1);
+		return lesTours.get(lesTours.size() - 1);
 	}
 
 	/**
