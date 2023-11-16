@@ -26,9 +26,9 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		/*if (this.estTerminee()){
+		if (this.estTerminee()){
 			throw new IllegalStateException();
-		}*/
+		}
 
 		Lance lance = new Lance(nombreDeQuillesAbattues);
 		tourCourant().addLance(lance);
@@ -114,6 +114,8 @@ public class PartieMonoJoueur {
 	 */
 	public int numeroProchainLancer() {
 		int nb = -1;
+		if (numeroTourCourant()==0)
+			return 0;
 		if (tourCourant().nbLance() == 0)
 			nb = 1;
 		if (numeroTourCourant() < 10) {
@@ -135,6 +137,8 @@ public class PartieMonoJoueur {
 				} else {
 					nb = 0;
 				}
+			} else {
+				nb =0;
 			}
 		}
 		return nb;
