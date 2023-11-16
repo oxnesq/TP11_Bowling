@@ -12,50 +12,48 @@ public class PartieMonoJoueur {
 	private int scorePartie;
 
 	public PartieMonoJoueur() {
-		this.lesTours= new ArrayList<Tour>();
+		this.lesTours = new ArrayList<Tour>();
 		Tour tour1 = new Tour();
 		lesTours.add(tour1);
-		this.scorePartie=0;
+		this.scorePartie = 0;
 	}
-	
+
 	/**
 	 * Cette méthode doit être appelée à chaque lancer de boule
 	 *
 	 * @param nombreDeQuillesAbattues le nombre de quilles abattues lors de ce lancer
+	 * @return vrai si le joueur doit lancer à nouveau pour continuer son tour, faux sinon
 	 * @throws IllegalStateException si la partie est terminée
-	 * @return vrai si le joueur doit lancer à nouveau pour continuer son tour, faux sinon	
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
 		if (this.estTerminee())
 			throw new IllegalStateException();
-			
-		Boolean bo = null;
+
+		Lance lance = new Lance(nombreDeQuillesAbattues);
+		tourCourant().addLance(lance);
 		
-		Lance lance=new Lance(nombreDeQuillesAbattues);
-		
-		if (numeroProchainLancer()==1) {
+		if (numeroProchainLancer() == 1) {
 			Tour tour = new Tour();
 			lesTours.add(tour);
-			tourCourant().addLance(lance);
-			bo=true;
-		} else {
-			tourCourant().addLance(lance);
-			bo=false;
 		}
-		
+		Boolean bo = false;
+		if (numeroProchainLancer()==2 ||numeroProchainLancer()==3 )
+			bo=true;
+
 		return bo;
-		
+
 	}
 
 	/**
 	 * Cette méthode donne le score du joueur.
 	 * Si la partie n'est pas terminée, on considère que les lancers restants
 	 * abattent 0 quille.
+	 *
 	 * @return Le score du joueur
 	 */
-	
+
 	public int score() {
-		int scoreTot=0;
+		int scoreTot = 0;
 		/*
 		for (Tour tour : lesTours){
 			if (tour.estUnSpare())
@@ -74,10 +72,10 @@ public class PartieMonoJoueur {
 	 */
 	public boolean estTerminee() {
 		Boolean bo = false;
-		if (numeroProchainLancer()==0)
-			bo=true;
+		if (numeroProchainLancer() == 0)
+			bo = true;
 		return bo;
-    }
+	}
 
 
 	/**
@@ -86,34 +84,42 @@ public class PartieMonoJoueur {
 	public int numeroTourCourant() {
 		return lesTours.size();
 	}
-	public Tour tourCourant(){
+
+	public Tour tourCourant() {
 		return lesTours.get(numeroTourCourant()-1);
 	}
 
 	/**
 	 * @return Le numéro du prochain lancer pour tour courant [1..3], ou 0 si le jeu
-	 *         est fini
+	 * est fini
 	 */
 	public int numeroProchainLancer() {
-		int nb=-1;
-		if (tourCourant().nbLance()==0){
-			nb=1;
-		} else if (tourCourant().nbLance()==1) {
-			if (numeroTourCourant()==10)
-				nb=2;
-			if (tourCourant().estUnStrike())
-				nb=1;
-		} else if (tourCourant().nbLance()==2) {
-			if (numeroTourCourant()!=10){
-				nb=1;
-			} else {
-				if (tourCourant().estUnSpare())
-					nb=3;
-			} 
-		} else if (tourCourant().nbLance()==3)
-			nb=0;
+		int nb = -1;
+		if (tourCourant().nbLance() == 0)
+			nb = 1;
+		if (numeroTourCourant() < 10) {
+			if (tourCourant().nbLance() == 1) {
+				if (tourCourant().estUnStrike()) {
+					nb = 1;
+				} else {
+					nb = 2;
+				}
+			} else if (tourCourant().nbLance() == 2) {
+				nb = 1;
+			}
+		} else if (numeroTourCourant() == 10) {
+			if (tourCourant().nbLance() == 1) {
+				nb = 2;
+			} else if (tourCourant().nbLance() == 2) {
+				if (tourCourant().estUnSpare() || tourCourant().estUnStrike()) {
+					nb = 3;
+				} else {
+					nb = 0;
+				}
+			}
+		}
+		return nb;
 
-			return nb;
+
 	}
-
 }
