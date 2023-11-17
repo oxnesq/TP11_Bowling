@@ -43,5 +43,9 @@ public class Tour {
 	public int nbLance(){
 		return lesLances.size();
 	}
+	
+	public Lance getLance(int i){
+		return lesLances.get(i);
+	}
 
 }

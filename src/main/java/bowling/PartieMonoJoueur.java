@@ -66,20 +66,27 @@ public class PartieMonoJoueur {
 			}else {
 				scoreTot+=scoreSpareorStrike(tour, lastSpare,lastStrike,tour.scoreTour());
 			}
+		}
+		for (int i=0; i<=lesTours.size();i++){
+			if (i<10){
+				scoreTot+=score2Tours(lesTours.get(i),lesTours.get(i+1));
+			} else {
+				scoreTot+=lesTours.get(i).scoreTour();
+			}
 		}*/
 		return scoreTot;
 	}
 	
-	/*public int scoreSpareorStrike(Tour tour,int spare, int strike,int nbQuillesAbbatues){
-		int scoreTot=0;
-		if (spare !=0 ){
-			scoreTot += spare+10; // a changer
-		} else if ( strike!=0) {
-			scoreTot += strike + 1; // a changer
+	/*public int score2Tours(Tour t, Tour tsuivant){
+		int scoreFinalTour=0;
+		if (t.estUnSpare()){
+			scoreFinalTour=10+tsuivant.getLance(1).getNombreGuillesAbattues();
+		} else if (t.estUnStrike()) {
+			scoreFinalTour=0;
 		} else {
-			scoreTot=tour.scoreTour();
+			scoreFinalTour=t.scoreTour();
 		}
-		return scoreTot;
+		return scoreFinalTour;
 	}*/
 
 	/**
