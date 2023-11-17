@@ -56,38 +56,27 @@ public class PartieMonoJoueur {
 
 	public int score() {
 		int scoreTot = 0;
-		/*int lastSpare = 0;
-		int lastStrike = 0;
-		for (Tour tour : lesTours){
-			if (tour.estUnSpare()){
-				lastSpare += scoreSpareorStrike(tour, lastSpare,lastStrike,0);
-			}else if (tour.estUnStrike()){
-				lastStrike += scoreSpareorStrike(tour, lastSpare,lastStrike,0);
-			}else {
-				scoreTot+=scoreSpareorStrike(tour, lastSpare,lastStrike,tour.scoreTour());
-			}
-		}
-		for (int i=0; i<=lesTours.size();i++){
-			if (i<10){
+		for (int i=0; i<lesTours.size();i++){
+			if (i<lesTours.size()-1){
 				scoreTot+=score2Tours(lesTours.get(i),lesTours.get(i+1));
 			} else {
 				scoreTot+=lesTours.get(i).scoreTour();
 			}
-		}*/
+		}
 		return scoreTot;
 	}
 	
-	/*public int score2Tours(Tour t, Tour tsuivant){
+	public int score2Tours(Tour t, Tour tsuivant){
 		int scoreFinalTour=0;
 		if (t.estUnSpare()){
-			scoreFinalTour=10+tsuivant.getLance(1).getNombreGuillesAbattues();
+			scoreFinalTour=10+tsuivant.getLance(0).getNombreGuillesAbattues();
 		} else if (t.estUnStrike()) {
-			scoreFinalTour=0;
+			scoreFinalTour=10+tsuivant.scoreTour();
 		} else {
 			scoreFinalTour=t.scoreTour();
 		}
 		return scoreFinalTour;
-	}*/
+	}
 
 	/**
 	 * @return vrai si la partie est terminée pour ce joueur, faux sinon
