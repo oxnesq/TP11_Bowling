@@ -26,9 +26,12 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
+		/*
 		if (this.estTerminee()) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("Partie terminée");
 		}
+		
+		 */
 
 		Lance lance = new Lance(nombreDeQuillesAbattues);
 		tourCourant().addLance(lance);
@@ -57,13 +60,14 @@ public class PartieMonoJoueur {
 	public int score() {
 		int scoreTot = 0;
 		for (int i = 0; i < lesTours.size(); i++) {
-			if (i < lesTours.size() - 2) {
+			if (i < lesTours.size() - 2) { /// A CHANGER
 				scoreTot += score2Tours(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
 			} else if (i < lesTours.size() - 1) {
 				scoreTot += score2Tours(lesTours.get(i), lesTours.get(i + 1), null);
 			} else {
 				scoreTot += lesTours.get(i).scoreTour();
 			}
+			System.out.println(scoreTot);
 		}
 		return scoreTot;
 	}
@@ -77,10 +81,10 @@ public class PartieMonoJoueur {
 			// strike : 10+ pts 2 prochains lances
 			if (tsuivant.estUnStrike()) {
 				if (t3 != null) {
-					scoreFinalTour = 10 + tsuivant.scoreTour() + t3.getLance(0).getNombreGuillesAbattues();
+					scoreFinalTour = 10 + 10 + t3.getLance(0).getNombreGuillesAbattues();
 				} else {
 					//si les deux derniers tours sont des strikes 10+10
-					scoreFinalTour = 10 + tsuivant.scoreTour() ;
+					scoreFinalTour = 10 + 10;
 				}
 			} else {
 				scoreFinalTour = 10 + tsuivant.scoreTour();
@@ -97,7 +101,9 @@ public class PartieMonoJoueur {
 	public boolean estTerminee() {
 		Boolean bo = false;
 		//if (numeroProchainLancer()==0)
-		if (lesTours.size() == 10 && (tourCourant().nbLance() == 3 || (!tourCourant().estUnStrike() && !tourCourant().estUnSpare() && tourCourant().nbLance() == 2)))
+		if (lesTours.size() >= 10 && 
+			(tourCourant().nbLance() == 3 || 
+				(!tourCourant().estUnStrike() && !tourCourant().estUnSpare() && tourCourant().nbLance() == 2)))
 			bo = true;
 		return bo;
 	}
@@ -122,43 +128,43 @@ public class PartieMonoJoueur {
 	 * est fini
 	 */
 	public int numeroProchainLancer() {
-		int nb = -1;
+		int numProchainLance = -1;
 		//si partie finie alors pas de num prochain lancer
 		if (numeroTourCourant() == 0)
 			return 0;
 		//si num de ce lancer est 0 alors tour sans lancer => prochain =1
 		if (tourCourant().nbLance() == 0)
-			nb = 1;
+			numProchainLance = 1;
 		//pour tous les tours "normaux"
 		if (numeroTourCourant() < 10) {
 			if (tourCourant().nbLance() == 1) {
 				// si le num de lancer est 1 alors soit c'est un strike et nv tour soit lancer 2
 				if (tourCourant().estUnStrike()) {
-					nb = 1;
+					numProchainLance = 1;
 				} else {
-					nb = 2;
+					numProchainLance = 2;
 				}
 			} else if (tourCourant().nbLance() == 2) {
 				// si le lancer actuel est le deuxieme alors tour finit
-				nb = 1;
+				numProchainLance = 1;
 			}
-		} else if (numeroTourCourant() == 10) { 
+		} else if (numeroTourCourant() == 10) {
 			// pour le dernier tour il y a le bonus ou fin de partie donc diff
 			if (tourCourant().nbLance() == 1) {
-				nb = 2;
+				numProchainLance = 2;
 			} else if (tourCourant().nbLance() == 2) {
-				if (tourCourant().estUnSpare() || tourCourant().estUnStrike()) { 
+				if (tourCourant().estUnSpare() || tourCourant().estUnStrike()) {
 					// si strike ou spare alors 3eme lance
-					nb = 3;
+					numProchainLance = 3;
 				} else {
-					nb = 0;
+					numProchainLance = 0;
 				}
-			} else {
+			} else if (tourCourant().nbLance() == 3){
 				//si 3eme lance alors fin de partie
-				nb = 0;
+				numProchainLance = 0;
 			}
 		}
-		return nb;
+		return numProchainLance;
 
 
 	}
