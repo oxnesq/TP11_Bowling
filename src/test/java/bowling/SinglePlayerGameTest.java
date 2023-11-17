@@ -41,6 +41,16 @@ class SinglePlayerGameTest {
 	}
 
 	@Test
+	void deuxSpare() {
+		faireUnSpare(); // 10 + 3
+		partie.enregistreLancer(3); // 3
+		partie.enregistreLancer(7); // 7  => tour 10+3
+		partie.enregistreLancer(3); // 3
+		assertEquals(29, partie.score());
+		assertFalse(partie.estTerminee());
+	}
+
+	@Test
 	void deuxStrikes() {
 		faireUnStrike(); // 10 + 10 + 4
 		faireUnStrike(); // 10 + 4 + 3
