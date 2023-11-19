@@ -8,23 +8,19 @@ public class DernierTour extends Tour {
 		this.lance3 = new Lance(-1);
 	}
 
-	public int scoreTour() {
-		return super.scoreTour() + lance3.getNombreGuillesAbattues();
-	}
-
 	public Boolean estTermine() {
 		boolean bo = false;
-		if (getLance1().estLance() && getLance2().estLance() && !lance3.estLance()) {
-			bo = true;
-		} else if (getLance1().estLance() && getLance2().estLance() && lance3.estLance()) {
-			if (getLance1().estUnStrike() || this.estUnSpare())
+		if (getLance1().estUnStrike() || this.estUnSpare()){
+			if (getLance1().estLance() && getLance2().estLance() && lance3.estLance())
 				bo = true;
-		}
+		} else if (getLance1().estLance() && getLance2().estLance() && !lance3.estLance()) {
+			bo = true;
+		} 
 		return bo;
 	}
 
 	public void addLance(int nb) {
-		super.addLance(nb);
+		super.addLance(nb); 
 		if (getLance1().estLance()
 			&& getLance2().estLance()
 			&& !lance3.estLance()) {
