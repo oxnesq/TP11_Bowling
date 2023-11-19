@@ -10,11 +10,13 @@ import java.util.ArrayList;
 public class PartieMonoJoueur {
 	private ArrayList<Tour> lesTours;
 	private int scorePartie;
-
 	public PartieMonoJoueur() {
 		this.lesTours = new ArrayList<Tour>();
-		Tour tour1 = new Tour();
-		lesTours.add(tour1);
+		for (int i=0;i<9;i++){
+			Tour tour = new Tour();
+			lesTours.add(tour);
+		}
+		DernierTour tour = new DernierTour();
 		this.scorePartie = 0;
 	}
 
@@ -31,7 +33,6 @@ public class PartieMonoJoueur {
 			throw new IllegalStateException("Partie terminée");
 		}
 		
-		 */
 
 		Lance lance = new Lance(nombreDeQuillesAbattues);
 		tourCourant().addLance(lance);
@@ -40,7 +41,7 @@ public class PartieMonoJoueur {
 			Tour tour = new Tour();
 			lesTours.add(tour);
 		}
-
+*/
 		Boolean bo = false;
 		if (numeroProchainLancer() == 2 || numeroProchainLancer() == 3)
 			bo = true;
@@ -59,6 +60,7 @@ public class PartieMonoJoueur {
 
 	public int score() {
 		int scoreTot = 0;
+		/*
 		for (int i = 0; i < lesTours.size(); i++) {
 			if (i < lesTours.size() - 2) { /// A CHANGER
 				scoreTot += score2Tours(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
@@ -68,12 +70,12 @@ public class PartieMonoJoueur {
 				scoreTot += lesTours.get(i).scoreTour();
 			}
 			System.out.println(scoreTot);
-		}
+		}*/
 		return scoreTot;
 	}
 
 	public int score2Tours(Tour t, Tour tsuivant, Tour t3) {
-		int scoreFinalTour = 0;
+		int scoreFinalTour = 0;/*
 		//spare : 10+ pts 1er lancé tour suivant
 		if (t.estUnSpare()) {
 			scoreFinalTour = 10 + tsuivant.getLance(0).getNombreGuillesAbattues();
@@ -88,16 +90,17 @@ public class PartieMonoJoueur {
 
 				}
 
-				/*
+				
 			} else {
 				System.out.println("On passe ici");
 				scoreFinalTour = 10 + 10 + 10;
 			}
 			
-				 */
+				 
 			} else {
 				scoreFinalTour = tsuivant.scoreTour();
 			}}
+			*/
 			return scoreFinalTour;
 		
 	}
@@ -107,11 +110,12 @@ public class PartieMonoJoueur {
 	 */
 	public boolean estTerminee() {
 		Boolean bo = false;
+		/*
 		//if (numeroProchainLancer()==0)
 		if (lesTours.size() >= 10 &&
 			(tourCourant().nbLance() == 3 ||
 				(!tourCourant().estUnStrike() && !tourCourant().estUnSpare() && tourCourant().nbLance() == 2)))
-			bo = true;
+			bo = true;*/
 		return bo;
 	}
 
@@ -120,7 +124,11 @@ public class PartieMonoJoueur {
 	 * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
 	 */
 	public int numeroTourCourant() {
-		int i = lesTours.size();
+		int i =0;
+		for (Tour tour : lesTours){
+			if (!tour.estTermine())
+				i=tour.getNumTour();
+		}
 		if (estTerminee())
 			i = 0;
 		return i;
@@ -136,6 +144,7 @@ public class PartieMonoJoueur {
 	 */
 	public int numeroProchainLancer() {
 		int numProchainLance = -1;
+		/*
 		//si partie finie alors pas de num prochain lancer
 		if (numeroTourCourant() == 0)
 			return 0;
@@ -170,7 +179,7 @@ public class PartieMonoJoueur {
 				//si 3eme lance alors fin de partie
 				numProchainLance = 0;
 			}
-		}
+		}*/
 		return numProchainLance;
 
 
