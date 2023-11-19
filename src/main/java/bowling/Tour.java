@@ -57,9 +57,9 @@ public class Tour {
 		int i = 0;
 		if (lance1.estLance()) {
 			i += 1;
-		} else if (lance2.estLance()) {
+		}
+		if (lance2.estLance()) {
 			i += 1;
-			;
 		}
 		return i;
 	}

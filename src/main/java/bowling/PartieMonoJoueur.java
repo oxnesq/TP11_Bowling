@@ -41,8 +41,10 @@ public class PartieMonoJoueur {
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
 		/*if (estTerminee()) {
 			throw new IllegalStateException("Partie terminée");
-		}*/
-		//System.out.println(tourCourant());
+		}
+		
+		 */
+		System.out.println( numeroTourCourant());
 		tourCourant().addLance(nombreDeQuillesAbattues);
 
 
@@ -126,7 +128,7 @@ public class PartieMonoJoueur {
 	 * @return Le numéro du tour courant [1..10], ou 0 si le jeu est fini
 	 */
 	public int numeroTourCourant() {
-		int i = 0;
+		int i = 1;
 		if (estTerminee())
 			return 0;
 		for (Tour tour : lesTours) {
@@ -135,7 +137,7 @@ public class PartieMonoJoueur {
 			}
 
 		}
-		return i + 1;
+		return i ;
 	}
 
 	public Tour tourCourant() {
