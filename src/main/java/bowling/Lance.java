@@ -25,4 +25,14 @@ public class Lance {
 	public int getNumLance() {
 		return numLance;
 	}
+
+	public void setNombreGuillesAbattues(int nombreGuillesAbattues) {
+		this.nombreGuillesAbattues = nombreGuillesAbattues;
+	}
+	public Boolean estLance(){
+		if (nombreGuillesAbattues==-1){
+			return false;
+		}
+		return true;
+	}
 }
