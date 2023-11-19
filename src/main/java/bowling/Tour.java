@@ -5,21 +5,14 @@ import java.util.ArrayList;
 public class Tour {
 	private Lance lance1;
 	private Lance lance2;
-	private static int num;
+	private static int num=1;
 	private int numTour;
-
-	public Tour(Lance lance1, Lance lance2) {
-		this.lance1 = lance1;
-		this.lance2 = lance2;
-		this.numTour = num;
-		num += 1;
-	}
 
 	public Tour() {
 		this.lance1 = new Lance(-1);
 		this.lance2 =new Lance(-1);
 		this.numTour = num;
-		num += 1;
+		this.num+=1;
 	}
 
 	public Boolean estUnSpare() {
@@ -77,8 +70,8 @@ public class Tour {
 	@Override
 	public String toString() {
 		return "Tour : " +
-			", numTour=" + numTour +
-			" lance1=" + lance1 +
+			" numTour=" + numTour +
+			", lance1=" + lance1 +
 			", lance2=" + lance2;
 	}
 }

@@ -14,20 +14,20 @@ public class DernierTour extends Tour {
 
 	public Boolean estTermine() {
 		boolean bo = false;
-		if (getLance1().estLance() && getLance2().estLance() && lance3.estLance()) {
+		if (getLance1().estLance() && getLance2().estLance() && !lance3.estLance()) {
+			bo = true;
+		} else if (getLance1().estLance() && getLance2().estLance() && lance3.estLance()) {
 			if (getLance1().estUnStrike() || this.estUnSpare())
 				bo = true;
-		} else if (getLance1().estLance() && getLance2().estLance() && !lance3.estLance()) {
-			bo = true;
 		}
 		return bo;
 	}
 
 	public void addLance(int nb) {
 		super.addLance(nb);
-		if (getLance1().getNombreGuillesAbattues() != -1
-			&& getLance2().getNombreGuillesAbattues() != -1
-			&& lance3.getNombreGuillesAbattues() == -1) {
+		if (getLance1().estLance()
+			&& getLance2().estLance()
+			&& !lance3.estLance()) {
 			lance3.setNombreGuillesAbattues(nb);
 		}
 	}

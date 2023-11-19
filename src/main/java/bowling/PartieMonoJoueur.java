@@ -39,17 +39,17 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		
+
 		if (this.estTerminee()) {
 			throw new IllegalStateException("Partie terminée");
 		}
-		
+		System.out.println(tourCourant());
 		tourCourant().addLance(nombreDeQuillesAbattues);
 		
+
 		Boolean bo = false;
 		if (numeroProchainLancer() == 2 || numeroProchainLancer() == 3)
 			bo = true;
-
 		return bo;
 
 	}
@@ -126,12 +126,12 @@ public class PartieMonoJoueur {
 	public int numeroTourCourant() {
 		int i = 0;
 		for (Tour tour : lesTours) {
-			if (!tour.estTermine())
-				i = tour.getNumTour();
+			if (tour.estTermine()){
+				i+=1;
+			}
+				
 		}
-		if (estTerminee())
-			i = 0;
-		return i;
+		return i+1;
 	}
 
 	public Tour tourCourant() {
@@ -145,16 +145,13 @@ public class PartieMonoJoueur {
 	public int numeroProchainLancer() {
 		int numProchainLance = -1;
 		//si partie finie alors pas de num prochain lancer
-		if (estTerminee())
+		if (estTerminee()) {
 			return 0;
-
-		for (Tour tour : lesTours) {
-			if (tour != getDernierTour()) {
-				if (!tourCourant().estTermine()) {
-					numProchainLance= tour.nbLance()+1;
-				}
+		} else if (!tourCourant().estTermine()) {
+			numProchainLance= tourCourant().nbLance() + 1;
+		} else {
+			numProchainLance = 1;
 		}
-	}
 		
 		/*
 		
@@ -193,5 +190,5 @@ public class PartieMonoJoueur {
 		return numProchainLance;
 
 
-}
+	}
 }
