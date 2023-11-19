@@ -22,10 +22,10 @@ public class PartieMonoJoueur {
 		this.scorePartie = 0;
 	}
 
-	public Tour getDernierTour() {
+	public DernierTour getDernierTour() {
 		for (Tour tour : lesTours) {
 			if (tour instanceof DernierTour) {
-				return tour;
+				return (DernierTour) tour;
 			}
 		}
 		return null;
@@ -39,13 +39,13 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		if (estTerminee()) {
+		/*if (estTerminee()) {
 			throw new IllegalStateException("Partie terminée");
-		}
-		System.out.println(tourCourant());
+		}*/
+		//System.out.println(tourCourant());
 		tourCourant().addLance(nombreDeQuillesAbattues);
-		
-		
+
+
 		Boolean bo = false;
 		if (numeroProchainLancer() == 2 || numeroProchainLancer() == 3)
 			bo = true;
@@ -63,49 +63,52 @@ public class PartieMonoJoueur {
 
 	public int score() {
 		int scoreTot = 0;
-		/*
-		for (int i = 0; i < lesTours.size(); i++) {
-			if (i < lesTours.size() - 2) { /// A CHANGER
-				scoreTot += score2Tours(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
-			} else if (i < lesTours.size() - 1) {
-				scoreTot += score2Tours(lesTours.get(i), lesTours.get(i + 1), null);
+		int limite = numeroTourCourant();
+		if (estTerminee()){
+			limite=lesTours.size()-1;
+		}
+		for (int i = 1; i <= limite; i++) {
+			// spare
+			if (lesTours.get(i).estUnSpare()) {
+				scoreTot += score2ToursSpare(lesTours.get(i), lesTours.get(i + 1));
+			} else if (lesTours.get(i).getLance1().estUnStrike()) {
+				//strike
+				if (i < limite - 1) {
+					scoreTot += score2toursStrike(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
+				} else {
+					scoreTot += 10 + tourCourant().scoreTour();
+				}
+
 			} else {
+				// autre
+				
 				scoreTot += lesTours.get(i).scoreTour();
 			}
 			System.out.println(scoreTot);
-		}*/
+		}
+		if (getDernierTour().estTermine()) {
+			System.out.println("dernier tour");
+			scoreTot += getDernierTour().scoreDernierTour();
+			System.out.println(getDernierTour());
+		}
 		return scoreTot;
 	}
 
-	public int score2Tours(Tour t, Tour tsuivant, Tour t3) {
-		int scoreFinalTour = 0;/*
-		//spare : 10+ pts 1er lancé tour suivant
-		if (t.estUnSpare()) {
-			scoreFinalTour = 10 + tsuivant.getLance(0).getNombreGuillesAbattues();
-		} else if (t.estUnStrike()) {
-			// strike : 10+ pts 2 prochains lances
-			if (tsuivant.estUnStrike()) {
-				if (t3 != null) {
-					scoreFinalTour = 10 + 10 + t3.getLance(0).getNombreGuillesAbattues();
-				} else {
-					//si les deux derniers tours sont des strikes 10+10
-					scoreFinalTour = 10 + 10;
-
-				}
-
-				
-			} else {
-				System.out.println("On passe ici");
-				scoreFinalTour = 10 + 10 + 10;
-			}
-			
-				 
-			} else {
-				scoreFinalTour = tsuivant.scoreTour();
-			}}
-			*/
+	public int score2ToursSpare(Tour t, Tour tsuivant) {
+		int scoreFinalTour = 0;
+		scoreFinalTour = 10 + tsuivant.getLance1().getNombreGuillesAbattues();
 		return scoreFinalTour;
 
+	}
+
+	public int score2toursStrike(Tour t, Tour tsuivant, Tour t3) {
+		int scoreFinalTour = 0;
+		if (tsuivant.getLance1().estUnStrike()) {
+			scoreFinalTour = 10 + 10 + t3.getLance1().getNombreGuillesAbattues();
+		} else {
+			scoreFinalTour = 10 + tsuivant.scoreTour();
+		}
+		return scoreFinalTour;
 	}
 
 	/**
@@ -127,12 +130,12 @@ public class PartieMonoJoueur {
 		if (estTerminee())
 			return 0;
 		for (Tour tour : lesTours) {
-			if (tour.estTermine()){
-				i+=1;
+			if (tour.estTermine()) {
+				i += 1;
 			}
-				
+
 		}
-		return i+1;
+		return i + 1;
 	}
 
 	public Tour tourCourant() {
@@ -149,45 +152,10 @@ public class PartieMonoJoueur {
 		if (estTerminee()) {
 			return 0;
 		} else if (!tourCourant().estTermine()) {
-			numProchainLance= tourCourant().nbLance() + 1;
+			numProchainLance = tourCourant().nbLance() + 1;
 		} else {
 			numProchainLance = 1;
 		}
-		
-		/*
-		
-		//si num de ce lancer est 0 alors tour sans lancer => prochain =1
-		if (tourCourant().nbLance() == 0)
-			numProchainLance = 1;
-		//pour tous les tours "normaux"
-		if (numeroTourCourant() < 10) {
-			if (tourCourant().nbLance() == 1) {
-				// si le num de lancer est 1 alors soit c'est un strike et nv tour soit lancer 2
-				if (tourCourant().estUnStrike()) {
-					numProchainLance = 1;
-				} else {
-					numProchainLance = 2;
-				}
-			} else if (tourCourant().nbLance() == 2) {
-				// si le lancer actuel est le deuxieme alors tour finit
-				numProchainLance = 1;
-			}
-		} else if (numeroTourCourant() == 10) {
-			// pour le dernier tour il y a le bonus ou fin de partie donc diff
-			if (tourCourant().nbLance() == 1) {
-				numProchainLance = 2;
-			} else if (tourCourant().nbLance() == 2) {
-				if (tourCourant().estUnSpare() || tourCourant().estUnStrike()) {
-					// si strike ou spare alors 3eme lance
-					numProchainLance = 3;
-				} else {
-					numProchainLance = 0;
-				}
-			} else if (tourCourant().nbLance() == 3) {
-				//si 3eme lance alors fin de partie
-				numProchainLance = 0;
-			}
-		}*/
 		return numProchainLance;
 
 

@@ -13,7 +13,7 @@ public class DernierTour extends Tour {
 		if (getLance1().estUnStrike() || this.estUnSpare()){
 			if (getLance1().estLance() && getLance2().estLance() && lance3.estLance())
 				bo = true;
-		} else if (getLance1().estLance() && getLance2().estLance() && !lance3.estLance()) {
+		} else if (getLance1().estLance() && getLance2().estLance() ) {
 			bo = true;
 		} 
 		return bo;
@@ -36,5 +36,11 @@ public class DernierTour extends Tour {
 	public String toString() {
 		return super.toString() +
 			", lance3=" + lance3;
+	}
+	
+	public int scoreDernierTour(){
+		return getLance1().getNombreGuillesAbattues()+
+			getLance2().getNombreGuillesAbattues()+
+			getLance3().getNombreGuillesAbattues();
 	}
 }
