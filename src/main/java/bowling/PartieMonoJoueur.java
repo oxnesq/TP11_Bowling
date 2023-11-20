@@ -20,6 +20,7 @@ public class PartieMonoJoueur {
 		DernierTour dernierTour = new DernierTour();
 		lesTours.add(dernierTour);
 		this.scorePartie = 0;
+		
 	}
 
 	public DernierTour getDernierTour() {
@@ -39,13 +40,15 @@ public class PartieMonoJoueur {
 	 * @throws IllegalStateException si la partie est terminée
 	 */
 	public boolean enregistreLancer(int nombreDeQuillesAbattues) {
-		/*if (estTerminee()) {
+		if (estTerminee()) {
 			throw new IllegalStateException("Partie terminée");
 		}
-		
-		 */
-		System.out.println( numeroTourCourant());
+		//System.out.println(numeroTourCourant());
+		/*for (Tour t : lesTours){
+			System.out.println(t);
+		}*/
 		tourCourant().addLance(nombreDeQuillesAbattues);
+		System.out.println(score());
 
 
 		Boolean bo = false;
@@ -65,33 +68,39 @@ public class PartieMonoJoueur {
 
 	public int score() {
 		int scoreTot = 0;
-		int limite = numeroTourCourant();
-		if (estTerminee()){
-			limite=lesTours.size()-1;
+		int limite = numeroTourCourant()-1;
+		if (estTerminee()) {
+			limite = lesTours.size() - 1;
 		}
-		for (int i = 1; i <= limite; i++) {
+		System.out.println("la");
+		System.out.println(numeroTourCourant());
+		for (int i = 0; i < limite; i++) {
+			System.out.println("rentreboucle");
 			// spare
 			if (lesTours.get(i).estUnSpare()) {
 				scoreTot += score2ToursSpare(lesTours.get(i), lesTours.get(i + 1));
 			} else if (lesTours.get(i).getLance1().estUnStrike()) {
 				//strike
-				if (i < limite - 1) {
+				if (i < limite - 2) {
 					scoreTot += score2toursStrike(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
+				} else if (i < limite-1) {
+					if (lesTours.get(i).getLance1().estUnStrike()) {
+						scoreTot += 10 + 10 + getDernierTour().getLance1().getNombreGuillesAbattues();
+					} else {
+						scoreTot += 10 + tourCourant().scoreTour();
+					}
 				} else {
-					scoreTot += 10 + tourCourant().scoreTour();
+					scoreTot+=10+ getDernierTour().scoreTour();
 				}
 
 			} else {
 				// autre
-				
 				scoreTot += lesTours.get(i).scoreTour();
 			}
-			System.out.println(scoreTot);
+			//System.out.println(scoreTot);
 		}
 		if (getDernierTour().estTermine()) {
-			System.out.println("dernier tour");
 			scoreTot += getDernierTour().scoreDernierTour();
-			System.out.println(getDernierTour());
 		}
 		return scoreTot;
 	}
@@ -137,11 +146,11 @@ public class PartieMonoJoueur {
 			}
 
 		}
-		return i ;
+		return i;
 	}
 
 	public Tour tourCourant() {
-		return lesTours.get(numeroTourCourant());
+		return lesTours.get(numeroTourCourant() - 1);
 	}
 
 	/**

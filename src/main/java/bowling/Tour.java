@@ -83,4 +83,8 @@ public class Tour {
 			", lance1=" + lance1 +
 			", lance2=" + lance2;
 	}
+
+	public static void setNum(int num) {
+		Tour.num = num;
+	}
 }
