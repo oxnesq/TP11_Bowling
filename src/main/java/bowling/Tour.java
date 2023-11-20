@@ -23,16 +23,7 @@ public class Tour {
 	}
 
 	public int scoreTour() {
-		int tot =0;
-		if (lance1.estLance() && lance2.estLance()) {
-			tot=lance1.getNombreGuillesAbattues() + lance2.getNombreGuillesAbattues();
-		}else if (lance1.estLance() && !lance2.estLance()) {
-			tot=lance1.getNombreGuillesAbattues() ;
-		}else {
-			tot=0;
-		}
-		return tot;
-		
+		return Math.max(0, lance1.getNombreGuillesAbattues()) + Math.max(0, lance2.getNombreGuillesAbattues());
 	}
 
 	public Boolean estTermine() {

@@ -48,7 +48,6 @@ public class PartieMonoJoueur {
 			System.out.println(t);
 		}*/
 		tourCourant().addLance(nombreDeQuillesAbattues);
-		System.out.println(score());
 
 
 		Boolean bo = false;
@@ -70,24 +69,24 @@ public class PartieMonoJoueur {
 		int scoreTot = 0;
 		int limite = numeroTourCourant()-1;
 		if (estTerminee()) {
-			limite = lesTours.size() - 1;
+			limite = lesTours.size() - 2;
 		}
-		System.out.println("la");
-		System.out.println(numeroTourCourant());
-		for (int i = 0; i < limite; i++) {
-			System.out.println("rentreboucle");
+		for (int i = 0; i <= limite; i++) {
+			System.out.println("dans la boucle");
 			// spare
 			if (lesTours.get(i).estUnSpare()) {
+				System.out.println("spare");
+				System.out.println(lesTours.get(i));
 				scoreTot += score2ToursSpare(lesTours.get(i), lesTours.get(i + 1));
 			} else if (lesTours.get(i).getLance1().estUnStrike()) {
 				//strike
 				if (i < limite - 2) {
 					scoreTot += score2toursStrike(lesTours.get(i), lesTours.get(i + 1), lesTours.get(i + 2));
 				} else if (i < limite-1) {
-					if (lesTours.get(i).getLance1().estUnStrike()) {
+					if (lesTours.get(i+1).getLance1().estUnStrike()) {
 						scoreTot += 10 + 10 + getDernierTour().getLance1().getNombreGuillesAbattues();
 					} else {
-						scoreTot += 10 + tourCourant().scoreTour();
+						scoreTot += 10 + lesTours.get(i+1).scoreTour();
 					}
 				} else {
 					scoreTot+=10+ getDernierTour().scoreTour();
@@ -95,9 +94,10 @@ public class PartieMonoJoueur {
 
 			} else {
 				// autre
+				System.out.println("tour normal");
 				scoreTot += lesTours.get(i).scoreTour();
 			}
-			//System.out.println(scoreTot);
+			System.out.println(scoreTot);
 		}
 		if (getDernierTour().estTermine()) {
 			scoreTot += getDernierTour().scoreDernierTour();
@@ -106,9 +106,7 @@ public class PartieMonoJoueur {
 	}
 
 	public int score2ToursSpare(Tour t, Tour tsuivant) {
-		int scoreFinalTour = 0;
-		scoreFinalTour = 10 + tsuivant.getLance1().getNombreGuillesAbattues();
-		return scoreFinalTour;
+		return 10 + Math.max(0, tsuivant.getLance1().getNombreGuillesAbattues());
 
 	}
 
